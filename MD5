@@ -1,0 +1,11 @@
+fad7d471fb9e04a45396af7b1a7158cc *DESCRIPTION
+170adbfa6b0fc4f794bca4d6201c8fe8 *NAMESPACE
+a56f821351b20bc038bcf8df09a512ec *R/GBcurves.R
+6e38f8d12b818e8a2d0a37920219c7f2 *build/vignette.rds
+84130df0bcc5072694fc8d918bfe8d7f *inst/doc/yields.R
+0465560c6ad5fadeee819a48829bbfc0 *inst/doc/yields.html
+c1058d6f606dbc0b4fe02800819a629e *inst/doc/yields.rmd
+dc089df46f182e732c3301f6c8329769 *man/yields.Rd
+5a3371b4dfd0d53cf8562215e3191364 *tests/testthat.R
+556a7915adc38211a5efb56314c80014 *tests/testthat/test_gb.R
+c1058d6f606dbc0b4fe02800819a629e *vignettes/yields.rmd
