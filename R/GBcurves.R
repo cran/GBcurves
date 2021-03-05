@@ -87,6 +87,8 @@ yields = function (init,fin,mty,ctry) {
         new <- stats::predict(spl, t.new)
         mat[i,] <- new$y
       }
+      pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
+      utils::setTxtProgressBar(pb,i)
       i <- i + 1
     }
     colnames(mat) <- paste0("M",mty)
@@ -105,12 +107,36 @@ yields = function (init,fin,mty,ctry) {
                  'Please check it.'))
     }
 
-
     dates <- format(seq(as.Date(init), as.Date(fin), 'day'), format="%Y-%m-%d", tz="UTC")
     if ( !identical(mty[mty < 0 | mty > 600], numeric(0)) ) {
         stop(paste0('argument \"mty\" must be between 0 and 600 months for ',ctry, ' yield curves'))
       }
     mat <- matrix(NA,length(dates),length(mty))
+
+    # function check_url
+
+    if(Sys.info()['sysname'] == 'Linux' ||Sys.info()['sysname'] == 'SunOS'){
+      options(HTTPUserAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6;
+      en-US; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12")
+    }
+
+    check_url <- function(url, tmp){
+      out=tryCatch(
+        expr = {
+          utils::download.file(url = url, destfile = tmp, mode="wb", quiet = TRUE)
+        },
+        error = function(e){
+          message(paste("It was not possible to download the date ",dates[i],". Try again, or the date ",dates[i]," is not available."))
+          return('problem')
+        },
+        warning = function(w){
+          return('problem')
+          message('')
+        }#,
+      )
+      return(out)
+    }
+
     # Scraping
     i <- 1
     while ( i <= length(dates) ) {
@@ -118,25 +144,31 @@ yields = function (init,fin,mty,ctry) {
       url <- paste0("http://yield.chinabond.com.cn/cbweb-mn/yc/downBzqxDetail?ycDefIds=2c9081e50a2f9606010a3068cae70001&&zblx=txy&&workTime=",
                    dates[i],
                    "&&dxbj=0&&qxlx=0,&&yqqxN=N&&yqqxK=K&&wrjxCBFlag=0&&locale=en_US")
-      utils::download.file(url = url, destfile = tmp, mode="wb", quiet = TRUE)
-      if ( !file.info(tmp)$size == 0 ) {
-        mat0 <- readxl::read_excel(tmp)
-        # Spline
-        tmp1.new <- as.numeric(as.matrix(mat0[,2])) * 12
-        # tmp1.new[1] = 1 / 252
-        y <- as.numeric(as.matrix(mat0[,3]))
-        # spl <- smooth.spline(y ~ tmp1.new,all.knots=TRUE,control.spar = list(tol=1e-4, eps= 0.01))
-        spl <- stats::smooth.spline(y ~ tmp1.new, cv = TRUE)
-        tmp1 <- mty
-        while ( utils::tail(tmp1, n = 1) > utils::tail(tmp1.new, n = 1) ) {# remove latest maturities not observed
-          tmp1 <- tmp1[-length(tmp1)]
+
+      test <- check_url(url = url, tmp = tmp) # return 'problem' or 0. If 0, tmp size can be 0 or != 0
+
+      if(test == 0){ # If = 0, great, it downloaded the date, but we don't know the file size ...
+        if (file.info(tmp)$size != 0 ) { # check file size
+          mat0 <- readxl::read_excel(tmp)
+          # Spline
+          tmp1.new <- as.numeric(as.matrix(mat0[,2])) * 12
+          y <- as.numeric(as.matrix(mat0[,3]))
+          spl <- stats::smooth.spline(y ~ tmp1.new, cv = TRUE)
+          tmp1 <- mty
+          while ( utils::tail(tmp1, n = 1) > utils::tail(tmp1.new, n = 1) ) {# remove latest maturities not observed
+            tmp1 <- tmp1[-length(tmp1)]
+          }
+          new <- stats::predict(spl, tmp1)
+          mat[i, ] <- new$y
+          if ( length(tmp1) != length(mty) ) mat[i, (length(tmp1)+1):length(mty)] = -Inf
+        } else {
+          dates[i] <- NA
         }
-        new <- stats::predict(spl, tmp1)
-        mat[i, ] <- new$y
-        if ( length(tmp1) != length(mty) ) mat[i, (length(tmp1)+1):length(mty)] = -Inf
-      } else {
+      }else{ # if result is 'problem', so can't download the date, tmp size is NA...
         dates[i] <- NA
       }
+      pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
+      utils::setTxtProgressBar(pb,i)
       i <- i + 1
     }
     colnames(mat) <- paste0("M",mty)
@@ -178,6 +210,8 @@ yields = function (init,fin,mty,ctry) {
           mat[i,] <- c(data[1], data[2:13][match(mty,mty.def)])
         }
       }
+      pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
+      utils::setTxtProgressBar(pb,i)
       i <- i + 1
     }
     mat <- matrix(as.numeric(mat[,2:ncol(mat)]),nrow(mat),(ncol(mat)-1))

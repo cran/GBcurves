@@ -1,5 +1,5 @@
 ---
-title: "Downloading yield curves with GBcurves"
+title: "Downloading yield curves"
 author: "Werley Cordeiro"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -15,7 +15,7 @@ This is a short document on getting up to speed with `GBcurves` quickly.
 
 ## Downloading dataset ##
 
-Version 0.1.0 of `GBcurves` makes it possible to download yield curves of Brazil, China, and Russia. The data comprises daily observed yields per maturities. If necessary, it interpolates with `smooth.spline` function for unavailable maturities.
+Version 0.1.1 of `GBcurves` makes it possible to download yield curves of Brazil, China, and Russia. The data comprises daily observed yields per maturities. If necessary, it interpolates with `smooth.spline` function for unavailable maturities.
 
 ### Example
 
@@ -23,7 +23,7 @@ Here's an example of usage that will download yield curves of Brazil:
 
 ```{r notrun, eval=FALSE}
 library(GBcurves)
-init <- "2020-05-10" # YYYY-MM-DD
+init <- "2020-05-11" # YYYY-MM-DD
 fin <- "2020-05-17" # YYYY-MM-DD
 mty <- c(3,6,12,120,360) # must be in months
 ctry <- "BR"
