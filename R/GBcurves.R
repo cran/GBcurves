@@ -87,8 +87,8 @@ yields = function (init,fin,mty,ctry) {
         new <- stats::predict(spl, t.new)
         mat[i,] <- new$y
       }
-      pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
-      utils::setTxtProgressBar(pb,i)
+      #pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
+      #utils::setTxtProgressBar(pb,i)
       i <- i + 1
     }
     colnames(mat) <- paste0("M",mty)
@@ -115,7 +115,7 @@ yields = function (init,fin,mty,ctry) {
 
     # function check_url
 
-    if(Sys.info()['sysname'] == 'Linux' ||Sys.info()['sysname'] == 'SunOS'){
+    if(Sys.info()['sysname'] == 'Linux' ||Sys.info()['sysname'] == 'SunOS' ||Sys.info()['sysname'] == 'Darwin'){
       options(HTTPUserAgent = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.6;
       en-US; rv:1.9.2.12) Gecko/20101026 Firefox/3.6.12")
     }
@@ -167,8 +167,8 @@ yields = function (init,fin,mty,ctry) {
       }else{ # if result is 'problem', so can't download the date, tmp size is NA...
         dates[i] <- NA
       }
-      pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
-      utils::setTxtProgressBar(pb,i)
+      #pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
+      #utils::setTxtProgressBar(pb,i)
       i <- i + 1
     }
     colnames(mat) <- paste0("M",mty)
@@ -210,8 +210,8 @@ yields = function (init,fin,mty,ctry) {
           mat[i,] <- c(data[1], data[2:13][match(mty,mty.def)])
         }
       }
-      pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
-      utils::setTxtProgressBar(pb,i)
+      #pb = utils::txtProgressBar(min = (1/length(dates)), max = length(dates), style = 3)
+      #utils::setTxtProgressBar(pb,i)
       i <- i + 1
     }
     mat <- matrix(as.numeric(mat[,2:ncol(mat)]),nrow(mat),(ncol(mat)-1))

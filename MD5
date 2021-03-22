@@ -1,11 +1,11 @@
-aed97d989eb2fec15d7aa165fb081cf6 *DESCRIPTION
+024f71cc85387a202d189326d3c6c2fd *DESCRIPTION
 170adbfa6b0fc4f794bca4d6201c8fe8 *NAMESPACE
-c291c6343580b343315fea42d7b64b53 *R/GBcurves.R
+320838bdc804318069c30cefe82d81da *R/GBcurves.R
 6e38f8d12b818e8a2d0a37920219c7f2 *build/vignette.rds
 195aed8365cd6500149ff87a09f59406 *inst/doc/yields.R
-9117f0a98d6dd44a0ebe0dc3d413c7fc *inst/doc/yields.html
+f91911bb06ff62276056dc7cfbdaf07d *inst/doc/yields.html
 93f1807417a7fc157b572bde47bb47f0 *inst/doc/yields.rmd
 dc089df46f182e732c3301f6c8329769 *man/yields.Rd
 5a3371b4dfd0d53cf8562215e3191364 *tests/testthat.R
-8b91b2dd0d89a026670969dd2eee1e05 *tests/testthat/test_gb.R
+a76490d738981ffc8d0e0099fe407663 *tests/testthat/test_gb.R
 93f1807417a7fc157b572bde47bb47f0 *vignettes/yields.rmd
