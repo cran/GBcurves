@@ -9,15 +9,15 @@ df.out <- yields(init = init, fin = fin, mty = mty, ctry = "BR")
 
 test_that(desc = 'Test function',{
   expect_true(nrow(df.out)>0)
-  } )
+} )
 
-df.out <- yields(init = init, fin = fin, mty = mty, ctry = "RU")
+df.out <- yields(init = init, fin = fin, mty = mty, ctry = "CN")
 
 test_that(desc = 'Test function',{
   expect_true(nrow(df.out)>0)
 } )
 
-df.out <- yields(init = init, fin = fin, mty = mty, ctry = "CN")
+df.out <- yields(init = init, fin = fin, mty = mty, ctry = "RU")
 
 test_that(desc = 'Test function',{
   expect_true(nrow(df.out)>0)
